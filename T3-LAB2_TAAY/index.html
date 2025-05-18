@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Shopping Store</title>
+    <style>
+        body {
+            background-color:rgb(49, 73, 124);
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #product-list, #cart {
+            border: 1px solid #f8fbfc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .product {
+            margin: 10px 0;
+        }
+        button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Mini Store</h1>
+    <div id="product-list"></div>
+    <h2>Add to Cart</h2>
+    <div id="cart"></div>
+    <div id="total"></div>
+    
+    <script>
+        const products = [
+        { id: 1, name: "Apple", price: 4.00 },
+        { id: 2, name: "Banana", price: 3.50 },
+        { id: 3, name: "Orange", price: 5.75 },
+    ];
+
+    let cart = [];
+
+    function displayProducts() {
+    const productList = document.getElementById('product-list');
+    products.forEach(product => {
+        const productDiv = document.createElement('div');
+        productDiv.className = 'product';
+        productDiv.innerHTML = `
+            <span>${product.name} - $${product.price.toFixed(2)}</span>
+            <button onclick="addToCart(${product.id})">Add to Cart</button>`;
+        productList.appendChild(productDiv);
+    });
+    }
+    function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    cart.push(product);
+    displayCart();
+    }   
+    function displayCart() {
+    const cartDiv = document.getElementById('cart');
+    cartDiv.innerHTML = '';
+    cart.forEach((item, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.innerHTML = `${item.name} - $${item.price.toFixed(2)} <button onclick="removeFromCart(${index})">Remove</button>`;
+        cartDiv.appendChild(itemDiv);
+    });
+    updateTotal();
+    }
+    function removeFromCart(index) {
+    cart.splice(index, 1);
+    displayCart();
+    }
+    function updateTotal() {
+    const totalDiv = document.getElementById('total');
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    totalDiv.innerHTML = `Total: $${total.toFixed(2)}`;
+    }
+    displayProducts();
+    </script>
+</body>   
+</html>
